@@ -1,0 +1,7 @@
+# Cmake build stuff
+build/
+CmakeCache.txt
+CmakeFiles/
+cmake_install.cmake
+Makefile
+*.out
