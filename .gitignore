@@ -5,3 +5,4 @@ CmakeFiles/
 cmake_install.cmake
 Makefile
 *.out
+screentime.db
