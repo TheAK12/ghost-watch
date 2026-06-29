@@ -44,3 +44,11 @@ install -Dm644 ghost-watch.service %{buildroot}%{_userunitdir}/ghost-watch.servi
 * Mon Jun 29 2026 Amritanshu Kumar <amritanshukumar13012008@gmaill.com> - 1.0.0-1
 - Version 1.0 architecture freeze
 - Integrated native mouse support, SQLite engine, and Apple UI
+
+%post
+systemctl --user daemon-reload
+systemctl --user enable --now ghost-watch.service || :
+
+%preun
+systemctl --user stop ghost-watch.service || :
+systemctl --user disable ghost-watch.service || :
