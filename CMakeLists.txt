@@ -12,8 +12,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(ftxui)
 
-add_executable(ghost-watch src/main.cpp)
-target_link_libraries(ghost-watch PRIVATE SQLite3::SQLite3)
-
 add_executable(ghost-watch-tui src/dashboard.cpp)
 target_link_libraries(ghost-watch-tui PRIVATE ftxui::ftxui SQLite3::SQLite3)
+
+add_executable(ghost-watch-daemon src/main.cpp)
+target_link_libraries(ghost-watch-daemon PRIVATE SQLite3::SQLite3)

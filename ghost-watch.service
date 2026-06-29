@@ -1,0 +1,12 @@
+[Unit]
+Description=Ghost Watch Screen Time Tracker
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ghost-watch-daemon
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -18,10 +18,27 @@
 #include <unistd.h>
 using json = nlohmann::json;
 
+// --- CRITICAL FIX: Match the XDG Base Directory path used in dashboard.cpp ---
+std::string get_db_path() {
+  const char *home = std::getenv("HOME");
+  if (!home)
+    return "screentime.db"; // Fallback safety
+
+  std::string dir = std::string(home) + "/.local/share/ghost-watch";
+
+  // Ensure the directory exists before SQLite tries to open a file inside it
+  std::system(("mkdir -p " + dir).c_str());
+
+  return dir + "/screentime.db";
+}
+
 // database function
 sqlite3 *init_database() {
   sqlite3 *db;
-  if (sqlite3_open("screentime.db", &db)) {
+
+  std::string db_file = get_db_path();
+
+  if (sqlite3_open(db_file.c_str(), &db)) {
     std::cerr << "[ERROR] Cannot open database: " << sqlite3_errmsg(db)
               << std::endl;
     return nullptr;
@@ -39,7 +56,7 @@ sqlite3 *init_database() {
     std::cerr << "[ERROR] SQL error: " << err_msg << std::endl;
     sqlite3_free(err_msg);
   } else {
-    std::cout << "[SUCCESS] SQLite Database initialized (screentime.db)!"
+    std::cout << "[SUCCESS] SQLite Database initialized (" << db_file << ")!"
               << std::endl;
   }
   return db;

@@ -102,7 +102,18 @@ void send_notification(const std::string &title, const std::string &body) {
   std::system(("notify-send -a 'Ghost Watch' '" + title + "' '" + body + "' &")
                   .c_str());
 }
-std::string db_path() { return "screentime.db"; }
+std::string db_path() {
+  const char *home = std::getenv("HOME");
+  if (!home)
+    return "screentime.db"; // Fallback safety
+
+  std::string dir = std::string(home) + "/.local/share/ghost-watch";
+
+  // Ensure the directory exists before SQLite tries to open a file inside it
+  std::system(("mkdir -p " + dir).c_str());
+
+  return dir + "/screentime.db";
+}
 
 struct AppStat {
   std::string name;
